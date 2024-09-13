@@ -1,0 +1,30 @@
+diff -Nur fstools-2021-01-04-c53b1882-a/libfstools/overlay.c fstools-2021-01-04-c53b1882-b/libfstools/overlay.c
+--- a/libfstools/overlay.c	2021-01-04 21:55:32.000000000 +0100
++++ b/libfstools/overlay.c	2024-09-10 01:33:04.082815696 +0200
+@@ -353,8 +353,10 @@
+ #else
+ 		MS_NOATIME,
+ #endif
+-#ifdef OVL_MOUNT_COMPRESS_ZLIB
+-		"compr=zlib"
++#ifdef OVL_MOUNT_COMPRESS_LZ4
++		"compress_algorithm=lz4"
++#elif defined(OVL_MOUNT_COMPRESS_ZLIB)
++ 		"compress_algorithm=zstd"
+ #else
+ 		NULL
+ #endif
+diff -Nur fstools-2021-01-04-c53b1882-a/CMakeLists.txt fstools-2021-01-04-c53b1882-b/CMakeLists.txt
+--- a/CMakeLists.txt	2021-01-04 21:55:32.000000000 +0100
++++ b/CMakeLists.txt	2024-09-10 09:43:43.542407268 +0200
+@@ -58,6 +58,10 @@
+ 	ADD_DEFINITIONS(-DOVL_MOUNT_COMPRESS_ZLIB)
+ ENDIF(DEFINED CMAKE_OVL_MOUNT_COMPRESS_ZLIB)
+
++IF(DEFINED CMAKE_OVL_MOUNT_COMPRESS_LZ4)
++	ADD_DEFINITIONS(-DOVL_MOUNT_COMPRESS_LZ4)
++ENDIF(DEFINED CMAKE_OVL_MOUNT_COMPRESS_LZ4)
++
+ IF(DEFINED CMAKE_OVL_MOUNT_FULL_ACCESS_TIME)
+ 	ADD_DEFINITIONS(-DOVL_MOUNT_FULL_ACCESS_TIME)
+ ENDIF(DEFINED CMAKE_OVL_MOUNT_FULL_ACCESS_TIME)

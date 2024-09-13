@@ -10,7 +10,7 @@ platform_check_image() {
 
 platform_do_upgrade() {
 	case "$(board_name)" in
-	openstick,uf896)
+	openstick,uf896,uz801)
 		kernelname="boot"
 		rootfsname="rootfs"
 		mmc_do_upgrade "$1"

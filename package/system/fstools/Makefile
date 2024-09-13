@@ -35,6 +35,7 @@ TARGET_LDFLAGS += $(if $(CONFIG_USE_GLIBC),-lrt)
 CMAKE_OPTIONS += $(if $(CONFIG_FSTOOLS_UBIFS_EXTROOT),-DCMAKE_UBIFS_EXTROOT=y)
 CMAKE_OPTIONS += $(if $(CONFIG_FSTOOLS_OVL_MOUNT_FULL_ACCESS_TIME),-DCMAKE_OVL_MOUNT_FULL_ACCESS_TIME=y)
 CMAKE_OPTIONS += $(if $(CONFIG_FSTOOLS_OVL_MOUNT_COMPRESS_ZLIB),-DCMAKE_OVL_MOUNT_COMPRESS_ZLIB=y)
+CMAKE_OPTIONS += $(if $(CONFIG_FSTOOLS_OVL_MOUNT_COMPRESS_LZ4),-DCMAKE_OVL_MOUNT_COMPRESS_LZ4=y)
 
 define Package/fstools
   SECTION:=base
@@ -66,6 +67,14 @@ define Package/fstools/config
 		default n
 		help
 			This option enables the compression using zlib on the storage device.
+
+	config FSTOOLS_OVL_MOUNT_COMPRESS_LZ4
+		depends on PACKAGE_fstools
+		bool "Compress using LZ4"
+		default n
+		help
+			This option enables the compression using LZ4 on the storage device.
+
 endef
 
 define Package/snapshot-tool
